@@ -1,8 +1,8 @@
 package hellojpa;
 
+import hellojpa.domain.Member;
+import hellojpa.domain.Team;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 public class JpaMain {
 
@@ -15,14 +15,18 @@ public class JpaMain {
         tx.begin();
 
         try {
-            List<Member> members = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)
-                    .setMaxResults(8)
-                    .getResultList();
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            for (Member member : members) {
-                System.out.println("member.name = " + member.getName());
-            }
+            Member member = new Member();
+            member.setName("Member");
+            member.setTeam(team);
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+
+            Team findTeam = findMember.getTeam();
 
             tx.commit();
         } catch (Exception e) {
