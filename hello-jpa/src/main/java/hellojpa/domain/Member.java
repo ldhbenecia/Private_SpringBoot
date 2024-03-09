@@ -8,8 +8,7 @@ import java.util.List;
 @Entity
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -21,10 +20,8 @@ public class Member {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @ManyToMany
-    @JoinTable(name = "member_product")
-    private List<Product> products = new ArrayList<>();
-
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
 
     public Member() {
     }
