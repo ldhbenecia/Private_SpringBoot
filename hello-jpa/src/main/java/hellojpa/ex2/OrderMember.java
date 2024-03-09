@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class OrderMember {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "order_member_id")
     private Long id;
 
     private String name;
@@ -17,6 +17,6 @@ public class Member {
     private String street;
     private String zipcode;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "orderMember")
     private List<Order> orders = new ArrayList<>();
 }
