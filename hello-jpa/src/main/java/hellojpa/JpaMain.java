@@ -4,6 +4,8 @@ import hellojpa.domain.Member;
 import hellojpa.domain.Team;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 public class JpaMain {
 
     public static void main(String[] args) {
@@ -15,19 +17,22 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setName("Member");
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
             
+            Member member = new Member();
+            member.setName("Member1");
             em.persist(member);
+
+            member.setTeam(team);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember = " + findMember.getClass());
-
-            Member reference = em.getReference(Member.class, member.getId());
-            System.out.println("reference = " + reference.getClass());
+            List<Member> members = em.createQuery("select m from Member m", Member.class)
+                    .getResultList();
+            System.out.println(members);
 
             tx.commit();
         } catch (Exception e) {
