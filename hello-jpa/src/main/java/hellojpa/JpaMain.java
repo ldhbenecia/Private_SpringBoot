@@ -1,6 +1,8 @@
 package hellojpa;
 
+import hellojpa.domain.Child;
 import hellojpa.domain.Member;
+import hellojpa.domain.Parent;
 import hellojpa.domain.Team;
 import jakarta.persistence.*;
 
@@ -17,22 +19,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-            
-            Member member = new Member();
-            member.setName("Member1");
-            em.persist(member);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            member.setTeam(team);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            em.flush();
-            em.clear();
-
-            List<Member> members = em.createQuery("select m from Member m", Member.class)
-                    .getResultList();
-            System.out.println(members);
+            em.persist(parent);
 
             tx.commit();
         } catch (Exception e) {
