@@ -4,6 +4,8 @@ import hellojpa.domain.Child;
 import hellojpa.domain.Member;
 import hellojpa.domain.Parent;
 import hellojpa.domain.Team;
+import hellojpa.training.Address;
+import hellojpa.training.OrderMember;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,14 +21,21 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Address address = new Address("city", "street", "zipcode");
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
+            OrderMember member = new OrderMember();
+            member.setName("MemberA");
+            member.setAddress(address);
+            em.persist(member);
 
-            em.persist(parent);
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+            OrderMember member2 = new OrderMember();
+            member2.setName("MemberB");
+            member2.setAddress(copyAddress);
+            em.persist(member2);
+
+            member.getAddress().setCity("NewCity");
 
             tx.commit();
         } catch (Exception e) {
