@@ -13,19 +13,19 @@ public class Order extends BaseEntity {
     @Column(name = "order_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_member_id")
+    private OrderMember orderMember;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
+
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
-    @ManyToOne
-    @JoinColumn(name = "order_member_id")
-    private OrderMember orderMember;
-
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    @OneToOne
-    @JoinColumn(name = "delivery_id")
-    private Delivery delivery;
 }
