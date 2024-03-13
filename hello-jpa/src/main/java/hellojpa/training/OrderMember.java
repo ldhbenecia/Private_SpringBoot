@@ -13,9 +13,12 @@ public class OrderMember extends BaseEntity {
     private Long id;
 
     private String name;
-    private String city;
-    private String street;
-    private String zipcode;
+
+    @Embedded
+    private Address address;
+
+    @Embedded
+    private Period period;
 
     @OneToMany(mappedBy = "orderMember")
     private List<Order> orders = new ArrayList<>();

@@ -1,6 +1,6 @@
-package hellojpa.ex2.item;
+package hellojpa.training.item;
 
-import hellojpa.ex2.Item;
+import hellojpa.training.Item;
 import jakarta.persistence.Entity;
 
 @Entity

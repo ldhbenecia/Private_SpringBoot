@@ -1,4 +1,4 @@
-package hellojpa.ex2;
+package hellojpa.training;
 
 public enum DeliveryStatus {
     READY,
