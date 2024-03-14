@@ -28,14 +28,9 @@ public class JpaMain {
             member.setAddress(address);
             em.persist(member);
 
-            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            em.flush();
 
-            OrderMember member2 = new OrderMember();
-            member2.setName("MemberB");
-            member2.setAddress(copyAddress);
-            em.persist(member2);
-
-            member.getAddress().setCity("NewCity");
+            List<OrderMember> result2 = em.createNativeQuery("select order_member_id, city, street, zipcode, name from OrderMember").getResultList();
 
             tx.commit();
         } catch (Exception e) {
