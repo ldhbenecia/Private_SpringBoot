@@ -4,6 +4,7 @@ import hellojpa.domain.Child;
 import hellojpa.domain.Member;
 import hellojpa.domain.Parent;
 import hellojpa.domain.Team;
+import hellojpa.jpql.JpqlMember;
 import hellojpa.training.Address;
 import hellojpa.training.OrderMember;
 import jakarta.persistence.*;
@@ -23,14 +24,16 @@ public class JpaMain {
         try {
             Address address = new Address("city", "street", "zipcode");
 
-            OrderMember member = new OrderMember();
+            JpqlMember member = new JpqlMember();
             member.setName("MemberA");
-            member.setAddress(address);
+            member.setAge(25);
             em.persist(member);
-
-            em.flush();
-
-            List<OrderMember> result2 = em.createNativeQuery("select order_member_id, city, street, zipcode, name from OrderMember").getResultList();
+            
+            TypedQuery<JpqlMember> query = em.createQuery("select m from JpqlMember m where m.name = :username", JpqlMember.class);
+            query.setParameter("username", "MemberA");
+            JpqlMember singleResult = query.getSingleResult();
+            System.out.println("-----------------------------------------------");
+            System.out.println("singleResult = " + singleResult);
 
             tx.commit();
         } catch (Exception e) {
