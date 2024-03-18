@@ -15,6 +15,11 @@ public class JpqlMember {
     @JoinColumn(name = "team_id")
     private JpqlTeam team;
 
+    public void changeTeam(JpqlTeam team) {
+        this.team = team;
+        team.getMembers().add(this);
+    }
+
     public Long getId() {
         return id;
     }
@@ -37,5 +42,13 @@ public class JpqlMember {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public JpqlTeam getTeam() {
+        return team;
+    }
+
+    public void setTeam(JpqlTeam team) {
+        this.team = team;
     }
 }

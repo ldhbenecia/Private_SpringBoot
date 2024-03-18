@@ -1,13 +1,11 @@
 package hellojpa;
 
-import hellojpa.domain.Child;
-import hellojpa.domain.Member;
-import hellojpa.domain.Parent;
-import hellojpa.domain.Team;
 import hellojpa.jpql.JpqlMember;
-import hellojpa.training.Address;
-import hellojpa.training.OrderMember;
-import jakarta.persistence.*;
+import hellojpa.jpql.JpqlTeam;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 import java.util.List;
 
@@ -22,19 +20,27 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Address address = new Address("city", "street", "zipcode");
+            JpqlTeam team = new JpqlTeam();
+            team.setName("teamA");
+            em.persist(team);
 
             JpqlMember member = new JpqlMember();
             member.setName("MemberA");
             member.setAge(25);
+
+            member.setTeam(team);
+
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            em.createQuery("select m from JpqlMember m order by m.age desc", JpqlMember.class)
-                    .setFirstResult(0) // 조회 시작 위치
-                    .setMaxResults(10) // 조회할 데이터 수
+            String innerJoinQuery = "select m from JpqlMember m join m.team t";
+            String leftOuterJoinQuery = "select m from JpqlMember m left join m.team t";
+            List<JpqlMember> result = em.createQuery(innerJoinQuery, JpqlMember.class)
+                    .getResultList();
+
+            List<JpqlMember> result2 = em.createQuery(leftOuterJoinQuery, JpqlMember.class)
                     .getResultList();
 
             tx.commit();
