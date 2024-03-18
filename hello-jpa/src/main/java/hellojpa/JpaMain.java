@@ -28,12 +28,14 @@ public class JpaMain {
             member.setName("MemberA");
             member.setAge(25);
             em.persist(member);
-            
-            TypedQuery<JpqlMember> query = em.createQuery("select m from JpqlMember m where m.name = :username", JpqlMember.class);
-            query.setParameter("username", "MemberA");
-            JpqlMember singleResult = query.getSingleResult();
-            System.out.println("-----------------------------------------------");
-            System.out.println("singleResult = " + singleResult);
+
+            em.flush();
+            em.clear();
+
+            em.createQuery("select m from JpqlMember m order by m.age desc", JpqlMember.class)
+                    .setFirstResult(0) // 조회 시작 위치
+                    .setMaxResults(10) // 조회할 데이터 수
+                    .getResultList();
 
             tx.commit();
         } catch (Exception e) {
