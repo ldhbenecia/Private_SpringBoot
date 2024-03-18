@@ -15,6 +15,17 @@ public class JpqlMember {
     @JoinColumn(name = "team_id")
     private JpqlTeam team;
 
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
+    }
+
     public void changeTeam(JpqlTeam team) {
         this.team = team;
         team.getMembers().add(this);
