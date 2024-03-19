@@ -39,15 +39,6 @@ public class JpaMain {
 
             String query = "select m.name, 'HELLO', true From JpqlMember m " +
                             "where m.type = :userType";
-            List<Object[]> result = em.createQuery(query)
-                    .setParameter("userType", MemberType.ADMIN)
-                    .getResultList();
-
-            for (Object[] objects : result) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
-            }
 
             tx.commit();
         } catch (Exception e) {
