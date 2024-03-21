@@ -70,4 +70,16 @@ public class OrderRepository {
                         " join fetch o.delivery d", Order.class
         ).getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class)
+//                .setFirstResult(1) // 페이징 불가능
+//                .setMaxResults(100) // 이것을 날려도 limit offset 쿼리가 날아가지않고 오류가 발생한다.
+                .getResultList();
+    }
 }
