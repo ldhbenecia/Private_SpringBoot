@@ -71,6 +71,16 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithMemberDeliveryPage(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public List<Order> findAllWithItem() {
         return em.createQuery(
                 "select distinct o from Order o" +
@@ -82,4 +92,5 @@ public class OrderRepository {
 //                .setMaxResults(100) // 이것을 날려도 limit offset 쿼리가 날아가지않고 오류가 발생한다.
                 .getResultList();
     }
+
 }
